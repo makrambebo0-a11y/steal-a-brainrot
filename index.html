@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>NOIR</title>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<style>
+:root{
+    --bg:#0e0e0e;
+    --text:#f5f5f5;
+    --muted:#888;
+    --line:#222;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:"Segoe UI",Tahoma;
+    background:var(--bg);
+    color:var(--text);
+}
+.hidden{display:none}
+
+/* LOGIN */
+.login{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.login-box{
+    width:320px;
+    text-align:center;
+}
+.logo{
+    font-size:30px;
+    letter-spacing:6px;
+    margin-bottom:5px;
+}
+.login-box p{
+    color:var(--muted);
+    margin-bottom:30px;
+}
+.login-box input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--line);
+    color:var(--text);
+}
+.login-box button{
+    width:100%;
+    padding:12px;
+    background:#fff;
+    color:#000;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+/* STORE */
+header{text-align:center;padding:30px}
+.filters button{
+    background:none;border:none;color:var(--muted);
+    margin:0 10px;cursor:pointer;
+}
+.filters button:hover{color:#fff}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:35px;
+    padding:40px;
+}
+.card{text-align:center}
+.card img{
+    width:100%;height:280px;object-fit:cover;border-radius:22px;
+}
+.card button{
+    margin-top:10px;
+    padding:10px 28px;
+    background:#fff;border:none;border-radius:30px;
+}
+.cart{text-align:center;padding:30px;border-top:1px solid var(--line)}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="login">
+    <div class="login-box">
+        <div class="logo">NOIR</div>
+        <p>Luxury Minimal Wear</p>
+
+        <input id="user" placeholder="Username">
+        <input id="pass" type="password" placeholder="Password">
+        <button onclick="login()">Enter</button>
+
+        <hr>
+        <div id="googleBtn"></div>
+    </div>
+</div>
+
+<!-- STORE -->
+<div id="store" class="hidden">
+
+<header>
+    <h1>NOIR</h1>
+    <div class="filters">
+        <button onclick="filter('all')">All</button>
+        <button onclick="filter('og')">OG</button>
+        <button onclick="filter('secret')">Secret</button>
+    </div>
+</header>
+
+<div class="products" id="products"></div>
+
+<div class="cart">
+    <p>Total — <span id="total">0</span> EGP</p>
+    <button onclick="buy()">Checkout</button>
+</div>
+
+</div>
+
+<script>
+const loginDiv = document.getElementById("login");
+const store = document.getElementById("store");
+const products = document.getElementById("products");
+const totalSpan = document.getElementById("total");
+
+/* GOOGLE LOGIN */
+window.onload = () => {
+    google.accounts.id.initialize({
+        client_id:"639465811681-hbvedfeb9b0e0pgeeo3vipsq0mdu90na.apps.googleusercontent.com",
+        callback:handleGoogleLogin
+    });
+
+    google.accounts.id.renderButton(
+        document.getElementById("googleBtn"),
+        {theme:"outline",size:"large"}
+    );
+
+    if(localStorage.getItem("login")==="1"){
+        loginDiv.style.display="none";
+        store.classList.remove("hidden");
+    }
+};
+
+function handleGoogleLogin(){
+    localStorage.setItem("login","1");
+    loginDiv.style.display="none";
+    store.classList.remove("hidden");
+}
+
+/* NORMAL LOGIN */
+function login(){
+    if(user.value==="admin" && pass.value==="1234"){
+        localStorage.setItem("login","1");
+        loginDiv.style.display="none";
+        store.classList.remove("hidden");
+    }
+}
+
+/* DATA */
+const data=[
+ {name:"meow owl",price:2000,type:"og",img:"2000.png"},
+ {name:"dragin",price:1000,type:"og",img:"200.png"},
+ {name:"strawberry elephant",price:2500,type:"og",img:"strawberry elephant.png"},
+ {name:"all things",price:150,type:"og",img:"300.png"},
+ {name:"grame",price:500,type:"og",img:"2511012+,01.png"},
+ {name:"grame",price:3000,type:"og",img:"500.png"},
+ {name:"all things",price:200,type:"secret",img:"800.png"}
+];
+
+let total=0, cart=[];
+
+function render(list){
+    products.innerHTML="";
+    list.forEach(p=>{
+        products.innerHTML+=`
+        <div class="card">
+            <img src="${p.img}">
+            <h3>${p.name}</h3>
+            <p>${p.price} EGP</p>
+            <button onclick="add(${p.price})">Add</button>
+        </div>`;
+    });
+}
+render(data);
+
+function filter(t){
+    if(t==="all") render(data);
+    else render(data.filter(p=>p.type===t));
+}
+
+function add(price){
+    total+=price;
+    totalSpan.textContent=total;
+}
+
+function buy(){
+    alert("Order sent ✅");
+}
+</script>
+
+</body>
+</html>
