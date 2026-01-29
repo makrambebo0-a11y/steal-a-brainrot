@@ -121,7 +121,7 @@ header{text-align:center;padding:30px}
 
 <div class="cart">
     <p>Total — <span id="total">0</span> EGP</p>
-    <button onclick="buy()">Checkout</button>
+    <button onclick="buy()">Checkout discord</button>
 </div>
 
 </div>
@@ -170,13 +170,18 @@ const data=[
  {name:"meow owl",price:2000,type:"og",img:"2000.png"},
  {name:"dragin",price:1000,type:"og",img:"200.png"},
  {name:"strawberry elephant",price:2500,type:"og",img:"strawberry elephant.png"},
- {name:"all things",price:150,type:"og",img:"300.png"},
- {name:"grame",price:500,type:"og",img:"2511012+,01.png"},
- {name:"grame",price:3000,type:"og",img:"500.png"},
+ {name:"all things",price:150,type:"secret",img:"300.png"},
+ {name:"grame",price:500,type:"secret",img:"2511012+,01.png"},
+ {name:"grame",price:3000,type:"secret",img:"500.png"},
  {name:"all things",price:200,type:"secret",img:"800.png"}
 ];
 
-let total=0, cart=[];
+
+const products = document.getElementById("products");
+const totalSpan = document.getElementById("total");
+
+let total = 0;
+let cart = [];
 
 function render(list){
     products.innerHTML="";
@@ -186,28 +191,30 @@ function render(list){
             <img src="${p.img}">
             <h3>${p.name}</h3>
             <p>${p.price} EGP</p>
-            <button onclick="add(${p.price})">Add</button>
+            <button onclick="add(${p.price},'${p.name}')">Add</button>
         </div>`;
     });
 }
+
 render(data);
 
-function filter(t){
-    if(t==="all") render(data);
-    else render(data.filter(p=>p.type===t));
+function add(price, name){
+    cart.push(name);
+    total += price;
+    totalSpan.textContent = total;
 }
 
-function add(price){
-    total+=price;
-    totalSpan.textContent=total;
-}
 
 function buy(){
-      const msg=`Order:%0A${cart.join("%0A")}%0ATotal: ${total} EGP`;
+    const msg=`Order:%0A${cart.join("%0A")}%0ATotal: ${total} EGP`;
     window.open(`https://discord.com/channels/1364274925015404576/1387830519441653921=${msg}`);
+
 }
+
+
 </script>
 
 </body>
 </html>
+
 
