@@ -127,6 +127,7 @@ header{text-align:center;padding:30px}
 </div>
 
 <script>
+<script>
 const loginDiv = document.getElementById("login");
 const store = document.getElementById("store");
 const products = document.getElementById("products");
@@ -136,12 +137,12 @@ const totalSpan = document.getElementById("total");
 window.onload = () => {
     google.accounts.id.initialize({
         client_id:"639465811681-hbvedfeb9b0e0pgeeo3vipsq0mdu90na.apps.googleusercontent.com",
-        callback:handleGoogleLogin
+        callback: handleGoogleLogin
     });
 
     google.accounts.id.renderButton(
         document.getElementById("googleBtn"),
-        {theme:"outline",size:"large"}
+        { theme:"outline", size:"large" }
     );
 
     if(localStorage.getItem("login")==="1"){
@@ -150,7 +151,8 @@ window.onload = () => {
     }
 };
 
-function handleGoogleLogin(){
+function handleGoogleLogin(response){
+    console.log("Google login success", response);
     localStorage.setItem("login","1");
     loginDiv.style.display="none";
     store.classList.remove("hidden");
@@ -176,10 +178,6 @@ const data=[
  {name:"all things",price:200,type:"secret",img:"800.png"}
 ];
 
-
-const products = document.getElementById("products");
-const totalSpan = document.getElementById("total");
-
 let total = 0;
 let cart = [];
 
@@ -204,17 +202,10 @@ function add(price, name){
     totalSpan.textContent = total;
 }
 
-
 function buy(){
     const msg=`Order:%0A${cart.join("%0A")}%0ATotal: ${total} EGP`;
-    window.open(`https://discord.com/channels/1364274925015404576/1387830519441653921=${msg}`);
-
+    window.open(`https://discord.com/channels/1364274925015404576/1387830519441653921`);
 }
-
-
 </script>
-
-</body>
-</html>
 
 
