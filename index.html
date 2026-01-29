@@ -203,9 +203,11 @@ function add(price){
 }
 
 function buy(){
-    alert("Order sent ✅");
+      const msg=`Order:%0A${cart.join("%0A")}%0ATotal: ${total} EGP`;
+    window.open(`https://discord.com/channels/1364274925015404576/1387830519441653921=${msg}`);
 }
 </script>
 
 </body>
 </html>
+
